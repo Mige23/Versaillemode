@@ -5,7 +5,7 @@ const CONFIG = {
   nombreTienda: "VERSAILLES MODA",
   // Número de WhatsApp con código de país, sin +, espacios ni guiones.
   // Ej. Argentina: 5491112345678 · Paraguay: 595981123456 · Colombia: 573001234567
-  whatsapp: "5491112345678",
+  whatsapp: "5493543614231",
   direccionLocal: "Av. Siempre Viva 742, Centro",
   moneda: "ARS",
   locale: "es-AR",
