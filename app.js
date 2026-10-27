@@ -1,43 +1,40 @@
-/* =========================================================
-   CONFIGURACIÓN DE LA TIENDA — editá estos valores
-   ========================================================= */
-const CONFIG = {
-  nombreTienda: "VERSAILLES MODA",
-  // Número de WhatsApp con código de país, sin +, espacios ni guiones.
-  // Ej. Argentina: 5491112345678 · Paraguay: 595981123456 · Colombia: 573001234567
-  whatsapp: "5493543614231",
-  direccionLocal: "Av. Siempre Viva 742, Centro",
-  moneda: "ARS",
-  locale: "es-AR",
-  // Costo de envío: 0 = "a coordinar" (no se suma al total)
-  costoEnvio: 0,
-};
+/* El catálogo se carga desde catalogo.json o desde la URL externa indicada
+   en <meta name="catalogo-url">. */
+let CONFIG = {};
+let CATEGORIAS = [];
+let PRODUCTOS = [];
+const CATALOG_CACHE_KEY = "catalogo_datos_cache";
 
-const img = (id) => `https://images.unsplash.com/${id}?w=600&q=75&auto=format&fit=crop`;
+function validarCatalogo(datos) {
+  if (!datos?.config || !Array.isArray(datos.categorias) || !Array.isArray(datos.productos)) {
+    throw new Error("El catálogo no tiene el formato esperado.");
+  }
+  datos.productos.forEach((p) => {
+    if (p.id == null || !p.nombre || !p.categoria || !Number.isFinite(Number(p.precio)) || !Array.isArray(p.talles)) {
+      throw new Error(`Producto inválido: ${p.nombre || p.id || "sin identificar"}`);
+    }
+    p.precio = Number(p.precio);
+    if (p.precioAnterior != null) p.precioAnterior = Number(p.precioAnterior);
+  });
+  return datos;
+}
 
-const CATEGORIAS = [
-  { id: "vestidos", nombre: "Vestidos", img: img("photo-1595777457583-95e059d581b8") },
-  { id: "tops", nombre: "Tops y remeras", img: img("photo-1564257631407-4deb1f99d992") },
-  { id: "jeans", nombre: "Jeans y pantalones", img: img("photo-1541099649105-f69ad21f3246") },
-  { id: "abrigos", nombre: "Abrigos", img: img("photo-1591047139829-d91aecb6caea") },
-  { id: "accesorios", nombre: "Accesorios", img: img("photo-1566150905458-1bf1fc113f0d") },
-];
-
-// precioAnterior es opcional (muestra el precio tachado y la etiqueta OFERTA)
-const PRODUCTOS = [
-  { id: 1, nombre: "Vestido floral midi", categoria: "vestidos", precio: 45900, precioAnterior: 52900, talles: ["S", "M", "L"], img: img("photo-1572804013309-59a88b7e92f1"), descripcion: "Vestido midi de viscosa con estampa floral, escote en V y cintura marcada." },
-  { id: 2, nombre: "Vestido lino natural", categoria: "vestidos", precio: 49900, nuevo: true, talles: ["S", "M", "L", "XL"], img: img("photo-1525507119028-ed4c629a60a3"), descripcion: "Fresco y liviano, ideal para días de calor. Con bolsillos laterales." },
-  { id: 3, nombre: "Top satinado", categoria: "tops", precio: 21900, talles: ["S", "M", "L"], img: img("photo-1564257631407-4deb1f99d992"), descripcion: "Top de satén con breteles regulables. Combina con jeans o faldas." },
-  { id: 4, nombre: "Remera básica algodón", categoria: "tops", precio: 12900, talles: ["XS", "S", "M", "L", "XL"], img: img("photo-1434389677669-e08b4cac3105"), descripcion: "Remera 100% algodón peinado, corte recto. Un básico infaltable." },
-  { id: 5, nombre: "Jean mom tiro alto", categoria: "jeans", precio: 38900, talles: ["36", "38", "40", "42", "44"], img: img("photo-1541099649105-f69ad21f3246"), descripcion: "Jean rígido tiro alto, calce mom, lavado clásico." },
-  { id: 6, nombre: "Pantalón sastrero", categoria: "jeans", precio: 34900, nuevo: true, talles: ["36", "38", "40", "42"], img: img("photo-1594633312681-425c7b97ccd1"), descripcion: "Pantalón de pierna ancha con pinzas, tela con caída." },
-  { id: 7, nombre: "Blazer oversize", categoria: "abrigos", precio: 64900, precioAnterior: 74900, talles: ["S", "M", "L"], img: img("photo-1539109136881-3be0616acf4b"), descripcion: "Blazer de corte oversize con hombreras suaves y forro interior." },
-  { id: 8, nombre: "Campera de jean", categoria: "abrigos", precio: 52900, talles: ["S", "M", "L", "XL"], img: img("photo-1576995853123-5a10305d93c0"), descripcion: "Campera de denim clásica, botones metálicos y bolsillos frontales." },
-  { id: 9, nombre: "Cartera de cuero", categoria: "accesorios", precio: 41900, talles: ["Único"], img: img("photo-1566150905458-1bf1fc113f0d"), descripcion: "Cartera de cuero ecológico con correa larga desmontable." },
-  { id: 10, nombre: "Bolso tote", categoria: "accesorios", precio: 29900, nuevo: true, talles: ["Único"], img: img("photo-1584917865442-de89df76afd3"), descripcion: "Bolso amplio para el día a día, con cierre y bolsillo interior." },
-  { id: 11, nombre: "Vestido negro de noche", categoria: "vestidos", precio: 58900, talles: ["S", "M", "L"], img: img("photo-1485968579580-b6d095142e6e"), descripcion: "Vestido largo con tajo lateral, perfecto para eventos." },
-  { id: 12, nombre: "Sandalias de taco", categoria: "accesorios", precio: 46900, talles: ["35", "36", "37", "38", "39", "40"], img: img("photo-1543163521-1bf539c55dd2"), descripcion: "Sandalias de taco medio, cómodas y elegantes." },
-];
+async function cargarCatalogo() {
+  const externa = document.querySelector('meta[name="catalogo-url"]')?.content?.trim();
+  try {
+    const respuesta = await fetch(externa || "catalogo.json", { cache: "no-store" });
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    const datos = validarCatalogo(await respuesta.json());
+    try { localStorage.setItem(CATALOG_CACHE_KEY, JSON.stringify(datos)); } catch {}
+    return datos;
+  } catch (error) {
+    try {
+      const cache = localStorage.getItem(CATALOG_CACHE_KEY);
+      if (cache) return validarCatalogo(JSON.parse(cache));
+    } catch {}
+    throw new Error(`No se pudo cargar el catálogo (${error.message}).`);
+  }
+}
 
 /* =========================================================
    UTILIDADES
@@ -68,6 +65,7 @@ function toast(msg) {
    CARRITO (se guarda en el navegador)
    ========================================================= */
 const CART_KEY = "catalogo_carrito";
+const ORDER_DRAFT_KEY = "catalogo_pedido_pendiente";
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { cart = []; }
 
@@ -315,6 +313,15 @@ $("#checkoutBtn").addEventListener("click", () => {
 form.addEventListener("change", (e) => { if (e.target.name === "entrega") toggleAddress(); });
 form.addEventListener("input", (e) => e.target.classList.remove("invalid"));
 
+function saveOrderDraft(data, mensaje) {
+  try {
+    localStorage.setItem(ORDER_DRAFT_KEY, JSON.stringify({
+      createdAt: new Date().toISOString(), data, entrega: entrega(),
+      cart: cart.map((item) => ({ ...item })), mensaje,
+    }));
+  } catch {}
+}
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const data = {
@@ -335,14 +342,29 @@ form.addEventListener("submit", (e) => {
   }
 
   const mensaje = buildMessage(data);
+  saveOrderDraft(data, mensaje);
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`, "_blank");
+  $("#orderPending").hidden = false;
+  $("#formError").hidden = true;
+  toast("Pedido guardado. El carrito se conserva hasta que confirmes el envío.");
+});
 
+$("#confirmOrderSent").addEventListener("click", () => {
   cart = [];
   saveCart();
+  try { localStorage.removeItem(ORDER_DRAFT_KEY); } catch {}
   renderCart();
   form.reset();
+  $("#orderPending").hidden = true;
   closeLayer(checkoutModal);
-  toast("¡Pedido listo! Envialo desde WhatsApp");
+  toast("Pedido marcado como enviado");
+});
+
+$("#retryWhatsapp").addEventListener("click", () => {
+  try {
+    const draft = JSON.parse(localStorage.getItem(ORDER_DRAFT_KEY));
+    if (draft?.mensaje) window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(draft.mensaje)}`, "_blank");
+  } catch { toast("No se pudo recuperar el pedido."); }
 });
 
 function buildMessage(d) {
@@ -405,12 +427,26 @@ document.addEventListener("error", (e) => {
 /* =========================================================
    INICIO
    ========================================================= */
-$("#year").textContent = new Date().getFullYear();
-$("#footerWhatsapp").textContent = `WhatsApp: +${CONFIG.whatsapp}`;
-$("#footerAddress").textContent = CONFIG.direccionLocal;
-$("#pickupNote").textContent = CONFIG.direccionLocal;
-$("#shipNote").textContent = CONFIG.costoEnvio > 0 ? `Costo: ${fmt(CONFIG.costoEnvio)}` : "Costo a coordinar";
+async function iniciar() {
+  try {
+    const catalogo = await cargarCatalogo();
+    CONFIG = catalogo.config;
+    CATEGORIAS = catalogo.categorias;
+    PRODUCTOS = catalogo.productos;
+    $("#year").textContent = new Date().getFullYear();
+    $("#footerWhatsapp").textContent = `WhatsApp: +${CONFIG.whatsapp}`;
+    $("#footerAddress").textContent = CONFIG.direccionLocal;
+    $("#pickupNote").textContent = CONFIG.direccionLocal;
+    $("#shipNote").textContent = CONFIG.costoEnvio > 0 ? `Costo: ${fmt(CONFIG.costoEnvio)}` : "Costo a coordinar";
+    $("#orderPending").hidden = !localStorage.getItem(ORDER_DRAFT_KEY);
+    renderCategories();
+    renderProducts();
+    renderCart();
+  } catch (error) {
+    $("#products").innerHTML = `<p class="catalog-error">${escapeHtml(error.message)} Volvé a intentar en unos minutos.</p>`;
+    $("#emptyMsg").hidden = true;
+    console.error(error);
+  }
+}
 
-renderCategories();
-renderProducts();
-renderCart();
+iniciar();

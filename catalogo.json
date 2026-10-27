@@ -1,0 +1,31 @@
+{
+  "config": {
+    "nombreTienda": "VERSAILLES MODA",
+    "whatsapp": "5493543614231",
+    "direccionLocal": "Av. Siempre Viva 742, Centro",
+    "moneda": "ARS",
+    "locale": "es-AR",
+    "costoEnvio": 0
+  },
+  "categorias": [
+    { "id": "vestidos", "nombre": "Vestidos", "img": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&q=75&auto=format&fit=crop" },
+    { "id": "tops", "nombre": "Tops y remeras", "img": "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&q=75&auto=format&fit=crop" },
+    { "id": "jeans", "nombre": "Jeans y pantalones", "img": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&q=75&auto=format&fit=crop" },
+    { "id": "abrigos", "nombre": "Abrigos", "img": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=75&auto=format&fit=crop" },
+    { "id": "accesorios", "nombre": "Accesorios", "img": "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&q=75&auto=format&fit=crop" }
+  ],
+  "productos": [
+    { "id": 1, "nombre": "Vestido floral midi", "categoria": "vestidos", "precio": 45900, "precioAnterior": 52900, "talles": ["S", "M", "L"], "img": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=75&auto=format&fit=crop", "descripcion": "Vestido midi de viscosa con estampa floral, escote en V y cintura marcada." },
+    { "id": 2, "nombre": "Vestido lino natural", "categoria": "vestidos", "precio": 49900, "nuevo": true, "talles": ["S", "M", "L", "XL"], "img": "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=600&q=75&auto=format&fit=crop", "descripcion": "Fresco y liviano, ideal para días de calor. Con bolsillos laterales." },
+    { "id": 3, "nombre": "Top satinado", "categoria": "tops", "precio": 21900, "talles": ["S", "M", "L"], "img": "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&q=75&auto=format&fit=crop", "descripcion": "Top de satén con breteles regulables. Combina con jeans o faldas." },
+    { "id": 4, "nombre": "Remera básica algodón", "categoria": "tops", "precio": 12900, "talles": ["XS", "S", "M", "L", "XL"], "img": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&q=75&auto=format&fit=crop", "descripcion": "Remera 100% algodón peinado, corte recto. Un básico infaltable." },
+    { "id": 5, "nombre": "Jean mom tiro alto", "categoria": "jeans", "precio": 38900, "talles": ["36", "38", "40", "42", "44"], "img": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&q=75&auto=format&fit=crop", "descripcion": "Jean rígido tiro alto, calce mom, lavado clásico." },
+    { "id": 6, "nombre": "Pantalón sastrero", "categoria": "jeans", "precio": 34900, "nuevo": true, "talles": ["36", "38", "40", "42"], "img": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600&q=75&auto=format&fit=crop", "descripcion": "Pantalón de pierna ancha con pinzas, tela con caída." },
+    { "id": 7, "nombre": "Blazer oversize", "categoria": "abrigos", "precio": 64900, "precioAnterior": 74900, "talles": ["S", "M", "L"], "img": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=75&auto=format&fit=crop", "descripcion": "Blazer de corte oversize con hombreras suaves y forro interior." },
+    { "id": 8, "nombre": "Campera de jean", "categoria": "abrigos", "precio": 52900, "talles": ["S", "M", "L", "XL"], "img": "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600&q=75&auto=format&fit=crop", "descripcion": "Campera de denim clásica, botones metálicos y bolsillos frontales." },
+    { "id": 9, "nombre": "Cartera de cuero", "categoria": "accesorios", "precio": 41900, "talles": ["Único"], "img": "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&q=75&auto=format&fit=crop", "descripcion": "Cartera de cuero ecológico con correa larga desmontable." },
+    { "id": 10, "nombre": "Bolso tote", "categoria": "accesorios", "precio": 29900, "nuevo": true, "talles": ["Único"], "img": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=75&auto=format&fit=crop", "descripcion": "Bolso amplio para el día a día, con cierre y bolsillo interior." },
+    { "id": 11, "nombre": "Vestido negro de noche", "categoria": "vestidos", "precio": 58900, "talles": ["S", "M", "L"], "img": "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=75&auto=format&fit=crop", "descripcion": "Vestido largo con tajo lateral, perfecto para eventos." },
+    { "id": 12, "nombre": "Sandalias de taco", "categoria": "accesorios", "precio": 46900, "talles": ["35", "36", "37", "38", "39", "40"], "img": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=75&auto=format&fit=crop", "descripcion": "Sandalias de taco medio, cómodas y elegantes." }
+  ]
+}

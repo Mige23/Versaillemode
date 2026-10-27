@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VERSAILLES MODA · Catálogo</title>
   <meta name="description" content="Catálogo de ropa de mujer. Elegí tus prendas y hacé tu pedido por WhatsApp.">
+  <!-- Para actualizar sin republicar, colocá aquí la URL pública de tu catálogo JSON. -->
+  <meta name="catalogo-url" content="">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
@@ -240,6 +242,14 @@
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.2.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
           Enviar pedido por WhatsApp
         </button>
+        <div class="order-pending" id="orderPending" hidden>
+          <strong>Tu pedido quedó guardado</strong>
+          <p>Si cerraste WhatsApp sin enviarlo, podés volver a abrirlo. El carrito solo se vacía cuando confirmás el envío.</p>
+          <div class="order-pending__actions">
+            <button type="button" class="btn btn--ghost" id="retryWhatsapp">Volver a WhatsApp</button>
+            <button type="button" class="link-btn" id="confirmOrderSent">Ya envié el pedido</button>
+          </div>
+        </div>
       </form>
     </div>
   </div>
